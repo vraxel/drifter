@@ -150,6 +150,26 @@ The project includes a Claude Code Skill (`.claude/skills/play-drifter.md`). Whe
 </details>
 
 <details>
+<summary><b>OpenAI Codex CLI</b></summary>
+
+Edit `~/.codex/config.json`:
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Or create `.codex/config.json` in your project root (project-level config takes precedence).
+
+</details>
+
+<details>
 <summary><b>Claude Desktop</b></summary>
 
 Edit the config file:

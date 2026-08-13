@@ -150,6 +150,26 @@ claude mcp add drifter -- drifter mcp
 </details>
 
 <details>
+<summary><b>OpenAI Codex CLI</b></summary>
+
+编辑 `~/.codex/config.json`：
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+或在项目根目录创建 `.codex/config.json`（项目级配置优先）。
+
+</details>
+
+<details>
 <summary><b>Claude Desktop</b></summary>
 
 编辑配置文件：
