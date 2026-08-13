@@ -34,9 +34,25 @@
 
 ## 安装
 
+### macOS (Homebrew)
+
+```bash
+brew tap vraxel/tap
+brew install drifter
+drifter
+```
+
+### Windows (Scoop)
+
+```powershell
+scoop bucket add vraxel https://github.com/vraxel/scoop-bucket
+scoop install drifter
+drifter
+```
+
 ### 下载二进制
 
-从 [Releases](../../releases) 下载对应平台的压缩包：
+也可以从 [Releases](../../releases) 直接下载：
 
 | 平台 | 文件 |
 |---|---|
@@ -44,13 +60,6 @@
 | macOS (Intel) | `drifter-macos-x86_64.tar.gz` |
 | macOS (Apple Silicon) | `drifter-macos-aarch64.tar.gz` |
 | Windows (64 位) | `drifter-windows-x86_64.zip` |
-
-```bash
-# macOS 示例
-tar xzf drifter-macos-universal.tar.gz
-cd drifter-macos-universal
-./drifter
-```
 
 ### 源码编译
 

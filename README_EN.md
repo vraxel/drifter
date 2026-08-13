@@ -34,9 +34,25 @@ We faithfully reproduced all game mechanics from the original source code, while
 
 ## Install
 
+### macOS (Homebrew)
+
+```bash
+brew tap vraxel/tap
+brew install drifter
+drifter
+```
+
+### Windows (Scoop)
+
+```powershell
+scoop bucket add vraxel https://github.com/vraxel/scoop-bucket
+scoop install drifter
+drifter
+```
+
 ### Download binary
 
-Grab the latest release for your platform from [Releases](../../releases):
+Or grab the latest release from [Releases](../../releases):
 
 | Platform | File |
 |---|---|
@@ -44,13 +60,6 @@ Grab the latest release for your platform from [Releases](../../releases):
 | macOS (Intel) | `drifter-macos-x86_64.tar.gz` |
 | macOS (Apple Silicon) | `drifter-macos-aarch64.tar.gz` |
 | Windows (64-bit) | `drifter-windows-x86_64.zip` |
-
-```bash
-# macOS example
-tar xzf drifter-macos-universal.tar.gz
-cd drifter-macos-universal
-./drifter
-```
 
 ### Build from source
 
