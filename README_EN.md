@@ -40,6 +40,7 @@ We faithfully reproduced all game mechanics from the original source code, while
 
 ```bash
 brew tap vraxel/tap
+brew trust vraxel/tap
 brew install drifter
 drifter
 ```

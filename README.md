@@ -40,6 +40,7 @@
 
 ```bash
 brew tap vraxel/tap
+brew trust vraxel/tap
 brew install drifter
 drifter
 ```
