@@ -302,6 +302,16 @@ Drifter MCP 使用标准 stdio 传输协议。任何兼容 [MCP 规范](https://
 - 原版游戏：[chrisguo/beijing_fushengji](https://github.com/chrisguo/beijing_fushengji)，郭祥昊作品 (GPL-2.0)
 - 游戏概念源自 "Drug Wars" / "Dope Wars"
 
+## 打赏
+
+如果这个项目对你有帮助，欢迎请我喝杯咖啡。
+
+<p>
+  <img src="assets/wechat-pay.jpg" alt="WeChat Pay" width="220">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/alipay.jpg" alt="Alipay" width="220">
+</p>
+
 ## 许可证
 
 GPL-2.0（与原版一致）
