@@ -66,6 +66,8 @@ drifter
 | Linux (aarch64) | `drifter-linux-aarch64.tar.gz` |
 | Windows (64 位) | `drifter-windows-x86_64.zip` |
 
+> **Windows 提示**：首次运行时 Windows Defender SmartScreen 可能弹出 "Windows 已保护你的电脑" 警告 -- 这是因为 exe 未经代码签名（开源项目不购买签名证书）。点击 "更多信息" -> "仍要运行" 即可。如果被 Windows Defender 误报为病毒，在 "Windows 安全中心" -> "病毒和威胁防护" -> "保护历史记录" 中找到对应项，选择 "允许" 并恢复文件。
+
 ### 源码编译
 
 ```bash

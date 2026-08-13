@@ -66,6 +66,8 @@ Or grab the latest release from [Releases](../../releases):
 | Linux (aarch64) | `drifter-linux-aarch64.tar.gz` |
 | Windows (64-bit) | `drifter-windows-x86_64.zip` |
 
+> **Windows note**: On first run, Windows Defender SmartScreen may show a "Windows protected your PC" warning because the exe is not code-signed (open-source projects typically don't purchase signing certificates). Click "More info" -> "Run anyway". If Defender quarantines the file, go to "Windows Security" -> "Virus & threat protection" -> "Protection history", find the entry, and choose "Allow" to restore it.
+
 ### Build from source
 
 ```bash
