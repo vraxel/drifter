@@ -31,6 +31,7 @@
 - **跨平台** -- macOS (Intel + Apple Silicon)、Windows、Linux (x86_64 + aarch64)
 - **单文件** -- 无依赖、无运行时、无需安装，直接运行
 - **纯键盘操作** -- WASD / 方向键导航，面板间自然流转
+- **MCP Server** -- 内置 [Model Context Protocol](https://modelcontextprotocol.io) 服务端，AI 大模型可直接操盘玩游戏或批量跑 benchmark
 
 ## 安装
 
@@ -93,6 +94,168 @@ cargo run --release
 **目标**：在第 40 天结束时，使 `现金 + 存款 - 债务` 最大化。
 
 **设施**：银行（存款每天 1% 利息）、医院（每点 3,500 元）、房屋中介（扩大背包容量）、邮局（还债）、网吧（赚取小额收入）。
+
+## AI 对战 (MCP)
+
+Drifter 内置 MCP (Model Context Protocol) 服务端，任何支持 MCP 的 AI 客户端都可以用工具调用的方式操盘玩游戏。支持两种模式：
+
+- **交互模式** -- AI 逐回合做决策（买卖、还债、前往地点），完整玩一局 40 天游戏
+- **Benchmark 模式** -- 内置贪心策略批量跑 N 局，输出统计报告（最高/最低/平均分、胜率、分数分布）
+
+同一个种子下不同模型跑出不同分数，可量化对比 AI 决策能力。
+
+### 可用工具
+
+| 工具 | 说明 |
+|---|---|
+| `new_game` | 开始新游戏（可指定 seed 和语言） |
+| `get_state` | 获取当前状态 |
+| `travel` | 前往地点（主回合动作，触发新一天） |
+| `buy` / `sell` | 买入 / 卖出商品 |
+| `bank_deposit` / `bank_withdraw` | 银行存取款 |
+| `repay_debt` | 还债 |
+| `visit_hospital` | 医院治疗 |
+| `rent_house` | 租房扩容 |
+| `visit_cafe` | 网吧 |
+| `benchmark` | 批量跑 N 局并返回统计 |
+
+### 配置方式
+
+先确保 `drifter` 在 PATH 中（通过 Homebrew/Scoop 安装或手动放入），然后按你使用的客户端配置：
+
+<details>
+<summary><b>Claude Code (CLI / IDE 扩展)</b></summary>
+
+```bash
+claude mcp add drifter -- drifter mcp
+```
+
+或手动编辑 `~/.claude.json`：
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+配置后可直接对话："帮我玩一局北京浮生记" 或 "benchmark 1000 局"。
+
+项目自带 Claude Code Skill（`.claude/skills/play-drifter.md`），在 drifter 目录下可用 `/play-drifter` 或 `/play-drifter 1000` 快捷调用。
+
+</details>
+
+<details>
+<summary><b>Claude Desktop</b></summary>
+
+编辑配置文件：
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+重启 Claude Desktop，对话中即可使用 drifter 工具。
+
+</details>
+
+<details>
+<summary><b>Cursor</b></summary>
+
+打开 Cursor Settings -> MCP，点击 "Add new MCP server"：
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+或编辑项目根目录 `.cursor/mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>Windsurf</b></summary>
+
+编辑 `~/.codeium/windsurf/mcp_config.json`：
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>VS Code (GitHub Copilot)</b></summary>
+
+在项目根目录创建 `.vscode/mcp.json`：
+
+```json
+{
+  "servers": {
+    "drifter": {
+      "type": "stdio",
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+在 Copilot Chat 中使用 Agent 模式即可调用。
+
+</details>
+
+<details>
+<summary><b>其他 MCP 客户端</b></summary>
+
+Drifter MCP 使用标准 stdio 传输协议。任何兼容 [MCP 规范](https://modelcontextprotocol.io) 的客户端均可接入：
+
+```
+命令: drifter mcp
+传输: stdio
+协议: JSON-RPC 2.0
+```
+
+启动后发送 `initialize` 握手，然后通过 `tools/list` 获取工具列表，`tools/call` 调用工具。
+
+</details>
 
 ## 技术栈
 

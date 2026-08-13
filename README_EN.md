@@ -31,6 +31,7 @@ We faithfully reproduced all game mechanics from the original source code, while
 - **Cross-platform** - macOS (Intel + Apple Silicon), Windows, Linux (x86_64 + aarch64)
 - **Single binary** - no dependencies, no runtime, no installation, just run it
 - **Keyboard-driven** - WASD / arrow keys for navigation, natural panel flow
+- **MCP Server** - built-in [Model Context Protocol](https://modelcontextprotocol.io) server lets AI models play the game or run batch benchmarks
 
 ## Install
 
@@ -93,6 +94,168 @@ You are a villager who comes to Beijing with **2,000 yuan** and **5,000 yuan of 
 **Goal**: Maximize `Cash + Savings - Debt` by day 40.
 
 **Facilities**: Bank (1% daily interest on savings), Hospital (3,500/point), House Agency (expand bag capacity), Post Office (repay debt), Internet Cafe (earn small rewards).
+
+## AI Play (MCP)
+
+Drifter includes a built-in MCP (Model Context Protocol) server. Any MCP-compatible AI client can play the game through tool calls. Two modes:
+
+- **Interactive** -- the AI makes every decision (buy/sell/travel) turn by turn, playing a full 40-day game
+- **Benchmark** -- built-in greedy strategy runs N games and returns aggregate statistics (best/worst/average scores, win rate, score distribution)
+
+Use the same seed across different models to compare their decision-making ability.
+
+### Available Tools
+
+| Tool | Description |
+|---|---|
+| `new_game` | Start a new game (optional seed and language) |
+| `get_state` | Get current game state |
+| `travel` | Travel to a location (main turn action, triggers new day) |
+| `buy` / `sell` | Buy / sell goods |
+| `bank_deposit` / `bank_withdraw` | Bank operations |
+| `repay_debt` | Repay debt |
+| `visit_hospital` | Heal at hospital |
+| `rent_house` | Expand bag capacity |
+| `visit_cafe` | Visit internet cafe |
+| `benchmark` | Run N games and return statistics |
+
+### Configuration
+
+Make sure `drifter` is in your PATH (via Homebrew/Scoop or manual install), then configure your client:
+
+<details>
+<summary><b>Claude Code (CLI / IDE extensions)</b></summary>
+
+```bash
+claude mcp add drifter -- drifter mcp
+```
+
+Or manually edit `~/.claude.json`:
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Then just ask: "Play a game of Beijing Drifter" or "Benchmark 1000 games".
+
+The project includes a Claude Code Skill (`.claude/skills/play-drifter.md`). When working in the drifter directory, use `/play-drifter` or `/play-drifter 1000`.
+
+</details>
+
+<details>
+<summary><b>Claude Desktop</b></summary>
+
+Edit the config file:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop. The drifter tools will be available in chat.
+
+</details>
+
+<details>
+<summary><b>Cursor</b></summary>
+
+Open Cursor Settings -> MCP, click "Add new MCP server":
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Or create `.cursor/mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>Windsurf</b></summary>
+
+Edit `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "drifter": {
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>VS Code (GitHub Copilot)</b></summary>
+
+Create `.vscode/mcp.json` in your project root:
+
+```json
+{
+  "servers": {
+    "drifter": {
+      "type": "stdio",
+      "command": "drifter",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Use Agent mode in Copilot Chat to access the tools.
+
+</details>
+
+<details>
+<summary><b>Other MCP clients</b></summary>
+
+Drifter MCP uses standard stdio transport. Any [MCP spec](https://modelcontextprotocol.io)-compatible client can connect:
+
+```
+Command:   drifter mcp
+Transport: stdio
+Protocol:  JSON-RPC 2.0
+```
+
+Send an `initialize` handshake, then use `tools/list` to discover tools and `tools/call` to invoke them.
+
+</details>
 
 ## Tech Stack
 
