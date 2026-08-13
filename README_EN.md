@@ -73,6 +73,15 @@ cd drifter
 cargo run --release
 ```
 
+## CLI
+
+```
+drifter              Start the TUI game
+drifter mcp          Start MCP server (stdio, JSON-RPC 2.0)
+drifter -v|--version Print version
+drifter -h|--help    Print help
+```
+
 ## Controls
 
 | Key | Action |

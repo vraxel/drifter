@@ -73,6 +73,15 @@ cd drifter
 cargo run --release
 ```
 
+## 命令行
+
+```
+drifter              启动 TUI 游戏
+drifter mcp          启动 MCP 服务端 (stdio, JSON-RPC 2.0)
+drifter -v|--version 显示版本号
+drifter -h|--help    显示帮助
+```
+
 ## 操作
 
 | 按键 | 功能 |

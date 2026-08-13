@@ -16,8 +16,27 @@ use ratatui::{backend::CrosstermBackend, Terminal};
 use app::App;
 
 fn main() -> io::Result<()> {
-    if std::env::args().nth(1).as_deref() == Some("mcp") {
-        return mcp::run();
+    match std::env::args().nth(1).as_deref() {
+        Some("mcp") => return mcp::run(),
+        Some("-v" | "--version") => {
+            println!("drifter {}", env!("CARGO_PKG_VERSION"));
+            return Ok(());
+        }
+        Some("-h" | "--help") => {
+            println!("drifter {} - Beijing Drifter (北京浮生记)", env!("CARGO_PKG_VERSION"));
+            println!();
+            println!("Usage: drifter [command]");
+            println!();
+            println!("Commands:");
+            println!("  (none)        Start the TUI game");
+            println!("  mcp           Start MCP server (stdio, JSON-RPC 2.0)");
+            println!();
+            println!("Options:");
+            println!("  -v, --version Print version");
+            println!("  -h, --help    Print this help");
+            return Ok(());
+        }
+        _ => {}
     }
 
     install_panic_hook();
