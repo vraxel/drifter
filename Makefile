@@ -1,4 +1,4 @@
-TARGETS := x86_64-apple-darwin aarch64-apple-darwin x86_64-pc-windows-gnu
+TARGETS := x86_64-apple-darwin aarch64-apple-darwin x86_64-pc-windows-gnu x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
 RELEASE_DIR := release
 
 .PHONY: build release clean
@@ -27,6 +27,14 @@ release: build
 		chmod +x $(RELEASE_DIR)/drifter-macos-$$arch/drifter; \
 		tar czf $(RELEASE_DIR)/drifter-macos-$$arch.tar.gz -C $(RELEASE_DIR) drifter-macos-$$arch; \
 		rm -rf $(RELEASE_DIR)/drifter-macos-$$arch; \
+	done
+	@# Linux
+	@for arch in x86_64 aarch64; do \
+		mkdir -p $(RELEASE_DIR)/drifter-linux-$$arch; \
+		cp target/$$arch-unknown-linux-gnu/release/drifter $(RELEASE_DIR)/drifter-linux-$$arch/drifter; \
+		chmod +x $(RELEASE_DIR)/drifter-linux-$$arch/drifter; \
+		tar czf $(RELEASE_DIR)/drifter-linux-$$arch.tar.gz -C $(RELEASE_DIR) drifter-linux-$$arch; \
+		rm -rf $(RELEASE_DIR)/drifter-linux-$$arch; \
 	done
 	@# Windows
 	@mkdir -p $(RELEASE_DIR)/drifter-windows-x86_64

@@ -28,7 +28,7 @@
 - **100% 还原原版逻辑** -- 18 条商业事件、12 条健康事件、7 条偷窃事件、利息计算、声望系统等，均对照原始 C++ 源码逐条验证
 - **中英双语** -- 随时按 `L` 切换
 - **现代 TUI** -- 天数进度条、价格涨跌颜色（绿涨红跌）、统一状态面板
-- **跨平台** -- macOS (Intel + Apple Silicon)、Windows，Linux 可源码编译
+- **跨平台** -- macOS (Intel + Apple Silicon)、Windows、Linux (x86_64 + aarch64)
 - **单文件** -- 无依赖、无运行时、无需安装，直接运行
 - **纯键盘操作** -- WASD / 方向键导航，面板间自然流转
 
@@ -59,6 +59,8 @@ drifter
 | macOS (通用) | `drifter-macos-universal.tar.gz` |
 | macOS (Intel) | `drifter-macos-x86_64.tar.gz` |
 | macOS (Apple Silicon) | `drifter-macos-aarch64.tar.gz` |
+| Linux (x86_64) | `drifter-linux-x86_64.tar.gz` |
+| Linux (aarch64) | `drifter-linux-aarch64.tar.gz` |
 | Windows (64 位) | `drifter-windows-x86_64.zip` |
 
 ### 源码编译

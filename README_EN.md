@@ -28,7 +28,7 @@ We faithfully reproduced all game mechanics from the original source code, while
 - **100% faithful game logic** - all 18 market events, 12 health events, 7 theft events, interest rates, fame system, and more, verified line-by-line against the original C++ source
 - **Bilingual** - full Chinese/English support, switch with `L` at any time
 - **Modern TUI** - day progress bar, color-coded prices (green = profitable, red = loss), unified status dashboard
-- **Cross-platform** - macOS (Intel + Apple Silicon), Windows, Linux (build from source)
+- **Cross-platform** - macOS (Intel + Apple Silicon), Windows, Linux (x86_64 + aarch64)
 - **Single binary** - no dependencies, no runtime, no installation, just run it
 - **Keyboard-driven** - WASD / arrow keys for navigation, natural panel flow
 
@@ -59,6 +59,8 @@ Or grab the latest release from [Releases](../../releases):
 | macOS (Universal) | `drifter-macos-universal.tar.gz` |
 | macOS (Intel) | `drifter-macos-x86_64.tar.gz` |
 | macOS (Apple Silicon) | `drifter-macos-aarch64.tar.gz` |
+| Linux (x86_64) | `drifter-linux-x86_64.tar.gz` |
+| Linux (aarch64) | `drifter-linux-aarch64.tar.gz` |
 | Windows (64-bit) | `drifter-windows-x86_64.zip` |
 
 ### Build from source
