@@ -1,7 +1,8 @@
 use std::fs;
 use std::path::PathBuf;
 
-use rand::Rng;
+use rand::rngs::StdRng;
+use rand::{Rng, SeedableRng};
 
 use crate::data::*;
 use crate::i18n::{texts, Lang};
@@ -50,12 +51,18 @@ pub struct GameState {
     fame_warned_book: bool,
     fame_warned_liquor: bool,
 
+    rng: StdRng,
+
     pub dead: bool,
     pub game_ended: bool,
 }
 
 impl GameState {
     pub fn new() -> Self {
+        Self::with_seed(None)
+    }
+
+    pub fn with_seed(seed: Option<u64>) -> Self {
         Self {
             cash: INITIAL_CASH,
             debt: INITIAL_DEBT,
@@ -74,6 +81,10 @@ impl GameState {
             pending_events: Vec::new(),
             fame_warned_book: false,
             fame_warned_liquor: false,
+            rng: match seed {
+                Some(s) => StdRng::seed_from_u64(s),
+                None => StdRng::from_entropy(),
+            },
             dead: false,
             game_ended: false,
         }
@@ -110,12 +121,11 @@ impl GameState {
     }
 
     fn make_prices(&mut self, leaveout: usize) {
-        let mut rng = rand::thread_rng();
-        for (price, def) in self.prices.iter_mut().zip(GOODS.iter()) {
-            *price = def.base_price + rng.gen_range(0..def.price_range);
+        for (i, def) in GOODS.iter().enumerate() {
+            self.prices[i] = def.base_price + self.rng.gen_range(0..def.price_range);
         }
         for _ in 0..leaveout {
-            let j = rng.gen_range(0..GOOD_COUNT);
+            let j = self.rng.gen_range(0..GOOD_COUNT);
             self.prices[j] = 0;
         }
     }
@@ -168,11 +178,10 @@ impl GameState {
     /// Every entry rolls independently - the original loop has no `break`, so a
     /// single day can carry several headlines. A full bag aborts the rest.
     fn do_market_events(&mut self, lang: Lang) {
-        let mut rng = rand::thread_rng();
         let t = texts(lang);
 
         for evt in MARKET_EVENTS.iter() {
-            if rng.gen_range(0..950) % evt.freq as i64 != 0 {
+            if self.rng.gen_range(0..950) % evt.freq as i64 != 0 {
                 continue;
             }
             if self.prices[evt.good_index] == 0 {
@@ -215,11 +224,10 @@ impl GameState {
     /// early, which is why the original never kills you on the same day it
     /// carts you off.
     fn do_health_phase(&mut self, lang: Lang) {
-        let mut rng = rand::thread_rng();
         let t = texts(lang);
 
         for evt in HEALTH_EVENTS.iter() {
-            if rng.gen_range(0..1000) % evt.freq as i64 != 0 {
+            if self.rng.gen_range(0..1000) % evt.freq as i64 != 0 {
                 continue;
             }
             let msg = match lang {
@@ -252,11 +260,10 @@ impl GameState {
     }
 
     fn forced_hospital_stay(&mut self, lang: Lang) {
-        let mut rng = rand::thread_rng();
         let t = texts(lang);
 
-        let delay_days = 1 + rng.gen_range(0..2);
-        let cost = delay_days as i64 * (1000 + rng.gen_range(0..8500));
+        let delay_days = 1 + self.rng.gen_range(0..2);
+        let cost = delay_days as i64 * (1000 + self.rng.gen_range(0..8500));
 
         let base = if self.subway_mode { 0 } else { LOCATION_COUNT };
         let index = base + self.current_location.unwrap_or(0);
@@ -271,7 +278,7 @@ impl GameState {
                 Lang::En => "the street",
             });
 
-        let spot_index = rng.gen_range(0..COLLAPSE_PLACES_ZH.len());
+        let spot_index = self.rng.gen_range(0..COLLAPSE_PLACES_ZH.len());
         let spot = match lang {
             Lang::Zh => COLLAPSE_PLACES_ZH[spot_index],
             Lang::En => COLLAPSE_PLACES_EN[spot_index],
@@ -296,11 +303,10 @@ impl GameState {
 
     /// Theft, the optional hacker, then the negative-cash clamp.
     fn do_steal_phase(&mut self, lang: Lang) {
-        let mut rng = rand::thread_rng();
         let t = texts(lang);
 
         for evt in STEAL_EVENTS.iter() {
-            if rng.gen_range(0..1000) % evt.freq as i64 != 0 {
+            if self.rng.gen_range(0..1000) % evt.freq as i64 != 0 {
                 continue;
             }
             let msg = match lang {
@@ -340,8 +346,7 @@ impl GameState {
         if !self.hacker_enabled {
             return;
         }
-        let mut rng = rand::thread_rng();
-        if rng.gen_range(0..1000) % 25 != 0 {
+        if self.rng.gen_range(0..1000) % 25 != 0 {
             return;
         }
         if self.bank < 1000 {
@@ -350,8 +355,8 @@ impl GameState {
 
         let t = texts(lang);
         if self.bank > 100000 {
-            let num = self.bank / (2 + rng.gen_range(0..20));
-            if rng.gen_range(0..20) % 3 != 0 {
+            let num = self.bank / (2 + self.rng.gen_range(0..20));
+            if self.rng.gen_range(0..20) % 3 != 0 {
                 self.bank -= num;
                 self.push(t.diary, format!("{}{}", t.hacker_decrease, num));
             } else {
@@ -359,7 +364,7 @@ impl GameState {
                 self.push(t.diary, format!("{}{}", t.hacker_increase, num));
             }
         } else {
-            let num = self.bank / (1 + rng.gen_range(0..15));
+            let num = self.bank / (1 + self.rng.gen_range(0..15));
             self.bank += num;
             self.push(t.diary, format!("{}{}", t.hacker_increase, num));
         }
@@ -549,7 +554,7 @@ impl GameState {
             return Err(t.cafe_no_money);
         }
         self.cafe_visits += 1;
-        let reward = 1 + rand::thread_rng().gen_range(0..10) as i64;
+        let reward = 1 + self.rng.gen_range(0..10) as i64;
         self.cash += reward;
         Ok(format!("{}{}", t.cafe_reward, reward))
     }

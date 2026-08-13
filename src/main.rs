@@ -2,6 +2,7 @@ mod app;
 mod data;
 mod game;
 mod i18n;
+mod mcp;
 mod ui;
 
 use std::io;
@@ -15,6 +16,10 @@ use ratatui::{backend::CrosstermBackend, Terminal};
 use app::App;
 
 fn main() -> io::Result<()> {
+    if std::env::args().nth(1).as_deref() == Some("mcp") {
+        return mcp::run();
+    }
+
     install_panic_hook();
 
     enable_raw_mode()?;
