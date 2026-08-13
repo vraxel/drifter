@@ -2,9 +2,9 @@
 
 [English](README_EN.md)
 
-经典怀旧游戏"北京浮生记"的终端版，用 Rust 重写。
+经典怀旧游戏"北京浮生记"的现代重制版 -- 你可以亲自玩，也可以**让 AI 替你玩**。
 
-在北京地铁沿线各站之间倒卖商品，应对随机事件，管理财务，在 40 天内尽可能多赚钱。
+内置 [MCP](https://modelcontextprotocol.io) 服务端，Claude / ChatGPT / Copilot 等 AI 大模型可以通过工具调用直接操盘：逐回合决策买卖、还债、前往地点，完整玩一局 40 天游戏，或批量跑 1000 局 benchmark 对比不同模型的决策能力。同一个种子，不同模型，谁赚得多？
 
 ![Drifter TUI - 交易界面](assets/screenshot.png)
 
@@ -25,13 +25,14 @@
 
 ## 特性
 
+- **让 AI 帮你玩** -- 内置 [MCP](https://modelcontextprotocol.io) 服务端 + [Claude Code Skill](https://docs.anthropic.com/en/docs/claude-code)，一句话让 AI 操盘全局；支持 Claude Code / Codex / Claude Desktop / Cursor / Windsurf / VS Code Copilot 等主流 AI 客户端
+- **AI Benchmark** -- 批量跑 N 局、固定种子对比不同模型决策能力，输出胜率、分数分布、最佳局详情
 - **100% 还原原版逻辑** -- 18 条商业事件、12 条健康事件、7 条偷窃事件、利息计算、声望系统等，均对照原始 C++ 源码逐条验证
 - **中英双语** -- 随时按 `L` 切换
 - **现代 TUI** -- 天数进度条、价格涨跌颜色（绿涨红跌）、统一状态面板
 - **跨平台** -- macOS (Intel + Apple Silicon)、Windows、Linux (x86_64 + aarch64)
 - **单文件** -- 无依赖、无运行时、无需安装，直接运行
 - **纯键盘操作** -- WASD / 方向键导航，面板间自然流转
-- **MCP Server** -- 内置 [Model Context Protocol](https://modelcontextprotocol.io) 服务端，AI 大模型可直接操盘玩游戏或批量跑 benchmark
 
 ## 安装
 

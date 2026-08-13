@@ -2,9 +2,9 @@
 
 [中文](README.md)
 
-A modern TUI remake of the classic Chinese trading game "Beijing Drifter" (北京浮生记), built with Rust.
+A modern TUI remake of the classic Chinese trading game "Beijing Drifter" (北京浮生记) -- play it yourself, or **let AI play for you**.
 
-Trade goods across Beijing's subway stations, dodge random events, manage your finances, and try to make a fortune in 40 days.
+Built-in [MCP](https://modelcontextprotocol.io) server lets Claude, ChatGPT, Copilot and other AI models play the game through tool calls: making buy/sell/travel decisions turn by turn for a full 40-day game, or batch-running 1000 games to benchmark decision-making ability across models. Same seed, different models -- who profits more?
 
 ![Drifter TUI - Trading](assets/screenshot.png)
 
@@ -25,13 +25,14 @@ We faithfully reproduced all game mechanics from the original source code, while
 
 ## Features
 
+- **Let AI play for you** - built-in [MCP](https://modelcontextprotocol.io) server + [Claude Code Skill](https://docs.anthropic.com/en/docs/claude-code); tell an AI to play the whole game in one sentence; works with Claude Code / Codex / Claude Desktop / Cursor / Windsurf / VS Code Copilot and more
+- **AI Benchmark** - batch-run N games with fixed seeds to compare decision-making across models; outputs win rate, score distribution, and best game details
 - **100% faithful game logic** - all 18 market events, 12 health events, 7 theft events, interest rates, fame system, and more, verified line-by-line against the original C++ source
 - **Bilingual** - full Chinese/English support, switch with `L` at any time
 - **Modern TUI** - day progress bar, color-coded prices (green = profitable, red = loss), unified status dashboard
 - **Cross-platform** - macOS (Intel + Apple Silicon), Windows, Linux (x86_64 + aarch64)
 - **Single binary** - no dependencies, no runtime, no installation, just run it
 - **Keyboard-driven** - WASD / arrow keys for navigation, natural panel flow
-- **MCP Server** - built-in [Model Context Protocol](https://modelcontextprotocol.io) server lets AI models play the game or run batch benchmarks
 
 ## Install
 
